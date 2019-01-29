@@ -4,19 +4,13 @@ import Book from '../book/Book';
 import { connect } from 'react-redux';
 import Actions from '../../redux/actions/actions';
 import { NotificationManager } from 'react-notifications';
+import AppService from '../../services/app.service';
 
 class BookList extends Component {
 
   componentDidMount() {
-    const headers = new Headers();
-    headers.append('customer', this.props.customer);
-
-    const config = { 
-      method: 'GET',
-      headers: headers
-    };
-
-    fetch('http://10.28.6.4:8080/book', config)
+    const appService = new AppService();
+    appService.getAllBooks()
       .then((response) => {
         return response.json();
       })
@@ -26,15 +20,8 @@ class BookList extends Component {
   }
 
   onDeleteBook = (bookId) => {
-    const headers = new Headers();
-    headers.append('customer', this.props.customer);
-
-    const config = { 
-      method: 'DELETE',
-      headers: headers
-    };
-
-    fetch('http://10.28.6.4:8080/book/' + bookId, config)
+    const appService = new AppService();
+    appService.deleteBook(bookId)
       .then(() => {
         this.props.onDeleteBook(bookId);
         NotificationManager.success('The book was deleted.', 'Success!');

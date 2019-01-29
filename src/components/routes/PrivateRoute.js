@@ -14,7 +14,7 @@ class PrivateRoute extends Component {
     return (
       <Route {...rest} render={(props) => (
         isLoggedIn
-          ? render ? render : <Component {...props} />
+          ? (render ? render : <Component {...props} />)
           : <Redirect to={redirectElement} />
       )} />
     );
@@ -23,7 +23,7 @@ class PrivateRoute extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    isLoggedIn: state.customer !== ''
+    isLoggedIn: state.isLoggedIn
   };
 };
 

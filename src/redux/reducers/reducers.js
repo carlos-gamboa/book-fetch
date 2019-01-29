@@ -1,16 +1,21 @@
 import Actions from '../actions/actions';
 
 const INITIAL_STATE = {
+  isLoggedIn: false,
   customer: '',
   books: []
 };
 
-function getSessionStorage() {
-  return sessionStorage.getItem('loggedUser') || '';
+function getTokenFromLocal() {
+  return localStorage.getItem('token') || '';
 }
 
-function saveSessionStorage(username) {
-  return sessionStorage.setItem('loggedUser', username);
+function saveTokenToLocal(token) {
+  return localStorage.setItem('token', token);
+}
+
+function removeTokenFromLocal() {
+  localStorage.removeItem('token');
 }
 
 const BookReducer = (state = INITIAL_STATE, action) => {
@@ -18,23 +23,25 @@ const BookReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
 
   case Actions.LOGIN:
-    saveSessionStorage(action.customer);
+    saveTokenToLocal(action.payload.token);
     return Object.assign(
       {},
       state,
       {
         ...state,
-        customer: action.customer
+        isLoggedIn: true,
+        customer: action.payload.customer
       }
     );
 
   case Actions.LOGOUT: 
-    saveSessionStorage('');
+    removeTokenFromLocal();
     return Object.assign(
       {},
       state,
       {
         ...state,
+        isLoggedIn: false,
         customer: ''
       }
     );
@@ -91,7 +98,7 @@ const BookReducer = (state = INITIAL_STATE, action) => {
       state,
       {
         ...state,
-        customer: getSessionStorage()
+        isLoggedIn: getTokenFromLocal() !== ''
       }
     );
   }

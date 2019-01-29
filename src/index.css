@@ -130,18 +130,19 @@ ul, ol {
   color: #E84C38;
 }
 
-.login {
+.auth {
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
 }
 
-.login__container {
+.auth__container {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  max-width: 25rem;
 }
 
 .book-list {

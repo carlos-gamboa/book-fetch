@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { NotificationManager } from 'react-notifications';
+import AppService from '../../services/app.service';
 
 class BookForm extends Component {
 
@@ -16,15 +17,8 @@ class BookForm extends Component {
 
   componentDidMount() {
     if (this.props.bookId !== '') {
-      const headers = new Headers();
-      headers.append('customer', this.props.customer);
-  
-      const config = { 
-        method: 'GET',
-        headers: headers
-      };
-  
-      fetch('http://10.28.6.4:8080/book/' + this.props.bookId, config)
+      const appService = new AppService();
+      appService.getBook(this.props.bookId)
         .then((response) => {
           return response.json();
         })
@@ -113,7 +107,6 @@ const mapDispatchToProps = () => {
 };
 
 BookForm.propTypes = {
-  customer: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   buttonText: PropTypes.string.isRequired,
   onSubmit: PropTypes.func.isRequired,

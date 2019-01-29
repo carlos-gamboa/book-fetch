@@ -6,25 +6,44 @@ import { withRouter } from 'react-router-dom';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import Actions from './redux/actions/actions';
 import Header from './components/header/Header';
-import Login from './components/login/Login';
+import Auth from './components/auth/Auth';
 import BookList from './components/book-list/BookList';
 import BookForm from './components/book-form/BookForm';
 import PrivateRoute from './components/routes/PrivateRoute';
+import AppService from './services/app.service';
 
 class App extends Component {
 
+  onLogin = (data) => {
+    const appService = new AppService();
+    appService.login(data)
+      .then((response) => {
+        return response.json();
+      })
+      .then((responseData) => {
+        this.props.onLogin(responseData.token, responseData.customer);
+        NotificationManager.success('Successful login', 'Success!');
+        this.props.history.replace('/book');
+      })
+      .catch(() => {
+        NotificationManager.error('An error has occurred', 'Error');
+      });
+  }
+
+  onRegister = (data) => {
+    const appService = new AppService();
+    appService.register(data)
+      .then(() => {
+        NotificationManager.success('Successful register', 'Success!');
+      })
+      .catch(() => {
+        NotificationManager.error('An error has occurred', 'Error');
+      });
+  }
+
   onAddBook = (book) => {
-    const headers = new Headers();
-    headers.append('customer', this.props.customer);
-    headers.append('Content-Type', 'application/json');
-
-    const config = { 
-      method: 'POST',
-      headers: headers,
-      body: JSON.stringify(book)
-    };
-
-    fetch('http://10.28.6.4:8080/book', config)
+    const appService = new AppService();
+    appService.addBook(book)
       .then((response) => {
         return response.json();
       })
@@ -37,18 +56,9 @@ class App extends Component {
       });
   }
 
-  onUpdateBook = (book, bookId) => {
-    const headers = new Headers();
-    headers.append('customer', this.props.customer);
-    headers.append('Content-Type', 'application/json');
-
-    const config = { 
-      method: 'PUT',
-      headers: headers,
-      body: JSON.stringify(book)
-    };
-
-    fetch('http://10.28.6.4:8080/book/' + bookId, config)
+  onUpdateBook = (bookId, book) => {
+    const appService = new AppService();
+    appService.updateBook(bookId, book)
       .then((response) => {
         return response.json();
       })
@@ -62,22 +72,25 @@ class App extends Component {
   }
 
   render() {
-    const { onLogin, onLogout, isLoggedIn } = this.props;
+    const { onLogout, isLoggedIn } = this.props;
 
     return (
       <React.Fragment>
         <Header isLoggedIn={isLoggedIn} onLogout={onLogout}></Header>
         <Switch>
           <Route exact path='/' render={() => (
-            <Login onLogin={onLogin}></Login>
+            <Auth title='Login' type='login' onSubmit={this.onLogin}></Auth>
+          )} />
+          <Route path='/register' render={() => (
+            <Auth title='Register' type='register' onSubmit={this.onRegister}></Auth>
           )} />
           <PrivateRoute exact path='/book' component={BookList}></PrivateRoute>
-          <PrivateRoute path='/book/add' render={() => (
+          <PrivateRoute path='/book/add' render={
             <BookForm title='New Book' buttonText='Add Book' onSubmit={this.onAddBook}></BookForm>
-          )}></PrivateRoute>
-          <PrivateRoute path='/book/:bookId' render={() => (
+          }></PrivateRoute>
+          <PrivateRoute path='/book/:bookId' render={
             <BookForm title='Edit Book' buttonText='Save Changes' onSubmit={this.onUpdateBook}></BookForm>
-          )}></PrivateRoute>
+          }></PrivateRoute>
           <Route render={() => <h1 className='heading__primary' style={{marginTop: '10rem'}}>404 NOT FOUND</h1>}></Route>
         </Switch>
         <NotificationContainer/>
@@ -88,15 +101,14 @@ class App extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    customer: state.customer,
-    isLoggedIn: state.customer !== ''
+    isLoggedIn: state.isLoggedIn
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onLogin: (customer) => {
-      dispatch({type: Actions.LOGIN, customer});
+    onLogin: (token, customer) => {
+      dispatch({type: Actions.LOGIN, payload: {token: token, customer: customer}});
     },
     onLogout: () => {
       dispatch({type: Actions.LOGOUT});
@@ -111,12 +123,12 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 App.propTypes = {
-  customer: PropTypes.string.isRequired,
   isLoggedIn: PropTypes.bool,
   onLogin: PropTypes.func,
   onLogout: PropTypes.func,
   onAddBook: PropTypes.func,
-  onUpdateBook: PropTypes.func
+  onUpdateBook: PropTypes.func,
+  history: PropTypes.object
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
