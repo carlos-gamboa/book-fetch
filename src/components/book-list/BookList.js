@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Book from '../book/Book';
 import { connect } from 'react-redux';
 import Actions from '../../redux/actions/actions';
+import { NotificationManager } from 'react-notifications';
 
 class BookList extends Component {
 
@@ -36,6 +37,10 @@ class BookList extends Component {
     fetch('http://10.28.6.4:8080/book/' + bookId, config)
       .then(() => {
         this.props.onDeleteBook(bookId);
+        NotificationManager.success('The book was deleted.', 'Success!');
+      })
+      .catch (() => {
+        NotificationManager.error('An error has occurred', 'Error');
       });
   }
 

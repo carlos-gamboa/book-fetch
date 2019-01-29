@@ -1,3 +1,5 @@
+@import '../node_modules/react-notifications/dist/react-notifications.css';
+
 *,
 *::before,
 *::after {
@@ -326,4 +328,8 @@ ul, ol {
 
 .as-stretch {
   align-self: stretch;
+}
+
+.notification-container {
+  margin-top: 4.68em;
 }

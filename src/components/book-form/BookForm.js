@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { NotificationManager } from 'react-notifications';
 
 class BookForm extends Component {
 
@@ -29,6 +30,9 @@ class BookForm extends Component {
         })
         .then((data) => {
           this.setState({name: data.name, author: data.author});
+        })
+        .catch(() => {
+          NotificationManager.error('An error has occurred', 'Error');
         });
     }
   }

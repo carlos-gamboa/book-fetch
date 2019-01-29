@@ -3,11 +3,13 @@ import { Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
+import { NotificationContainer, NotificationManager } from 'react-notifications';
 import Actions from './redux/actions/actions';
 import Header from './components/header/Header';
 import Login from './components/login/Login';
 import BookList from './components/book-list/BookList';
 import BookForm from './components/book-form/BookForm';
+import PrivateRoute from './components/routes/PrivateRoute';
 
 class App extends Component {
 
@@ -28,6 +30,10 @@ class App extends Component {
       })
       .then((data) => {
         this.props.onAddBook(data);
+        NotificationManager.success(`${data.name} was added.`, 'Success!');
+      })
+      .catch(() => {
+        NotificationManager.error('An error has occurred', 'Error');
       });
   }
 
@@ -48,6 +54,10 @@ class App extends Component {
       })
       .then(() => {
         this.props.onUpdateBook(book, bookId);
+        NotificationManager.success(`${book.name} was updated.`, 'Success!');
+      })
+      .catch(() => {
+        NotificationManager.error('An error has occurred', 'Error');
       });
   }
 
@@ -61,14 +71,16 @@ class App extends Component {
           <Route exact path='/' render={() => (
             <Login onLogin={onLogin}></Login>
           )} />
-          <Route exact path='/book' component={BookList}></Route>
-          <Route path='/book/add' render={() => (
+          <PrivateRoute exact path='/book' component={BookList}></PrivateRoute>
+          <PrivateRoute path='/book/add' render={() => (
             <BookForm title='New Book' buttonText='Add Book' onSubmit={this.onAddBook}></BookForm>
-          )}></Route>
-          <Route path='/book/:bookId' render={() => (
+          )}></PrivateRoute>
+          <PrivateRoute path='/book/:bookId' render={() => (
             <BookForm title='Edit Book' buttonText='Save Changes' onSubmit={this.onUpdateBook}></BookForm>
-          )}></Route>
+          )}></PrivateRoute>
+          <Route render={() => <h1 className='heading__primary' style={{marginTop: '10rem'}}>404 NOT FOUND</h1>}></Route>
         </Switch>
+        <NotificationContainer/>
       </React.Fragment>
     );
   }
