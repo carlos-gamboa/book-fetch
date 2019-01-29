@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 import Actions from './redux/actions/actions';
 import Header from './components/header/Header';
 import Login from './components/login/Login';
@@ -9,8 +10,49 @@ import BookList from './components/book-list/BookList';
 import BookForm from './components/book-form/BookForm';
 
 class App extends Component {
+
+  onAddBook = (book) => {
+    const headers = new Headers();
+    headers.append('customer', this.props.customer);
+    headers.append('Content-Type', 'application/json');
+
+    const config = { 
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify(book)
+    };
+
+    fetch('http://10.28.6.4:8080/book', config)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        this.props.onAddBook(data);
+      });
+  }
+
+  onUpdateBook = (book, bookId) => {
+    const headers = new Headers();
+    headers.append('customer', this.props.customer);
+    headers.append('Content-Type', 'application/json');
+
+    const config = { 
+      method: 'PUT',
+      headers: headers,
+      body: JSON.stringify(book)
+    };
+
+    fetch('http://10.28.6.4:8080/book/' + bookId, config)
+      .then((response) => {
+        return response.json();
+      })
+      .then(() => {
+        this.props.onUpdateBook(book, bookId);
+      });
+  }
+
   render() {
-    const { onLogin, onLogout, isLoggedIn, onAddBook, onUpdateBook } = this.props;
+    const { onLogin, onLogout, isLoggedIn } = this.props;
 
     return (
       <React.Fragment>
@@ -21,10 +63,10 @@ class App extends Component {
           )} />
           <Route exact path='/book' component={BookList}></Route>
           <Route path='/book/add' render={() => (
-            <BookForm title='New Book' buttonText='Add Book' onSubmit={onAddBook}></BookForm>
+            <BookForm title='New Book' buttonText='Add Book' onSubmit={this.onAddBook}></BookForm>
           )}></Route>
           <Route path='/book/:bookId' render={() => (
-            <BookForm title='Edit Book' buttonText='Save Changes' onSubmit={onUpdateBook}></BookForm>
+            <BookForm title='Edit Book' buttonText='Save Changes' onSubmit={this.onUpdateBook}></BookForm>
           )}></Route>
         </Switch>
       </React.Fragment>
@@ -50,7 +92,7 @@ const mapDispatchToProps = (dispatch) => {
     onAddBook: (book) => {
       dispatch({type: Actions.ADD_BOOK, book});
     },
-    onUpdateBook: (bookId, book) => {
+    onUpdateBook: (book, bookId) => {
       dispatch({type: Actions.UPDATE_BOOK, payload: {bookId: bookId, book: book}});
     }
   };
@@ -65,4 +107,4 @@ App.propTypes = {
   onUpdateBook: PropTypes.func
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

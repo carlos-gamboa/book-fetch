@@ -13,6 +13,32 @@ class BookForm extends Component {
     };
   }
 
+  componentDidMount() {
+    if (this.props.bookId !== '') {
+      const headers = new Headers();
+      headers.append('customer', this.props.customer);
+  
+      const config = { 
+        method: 'GET',
+        headers: headers
+      };
+  
+      fetch('http://10.28.6.4:8080/book/' + this.props.bookId, config)
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          this.setState({name: data.name, author: data.author});
+        });
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.title !== this.props.title && this.props.title === 'New Book') {
+      this.setState({name: '', author: ''});
+    }
+  }
+
   handleNameChange = (event) => {
     event.preventDefault();
     this.setState({
@@ -29,7 +55,10 @@ class BookForm extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    this.props.onSubmit(this.state);
+    this.props.onSubmit(this.state, this.props.bookId);
+    if (this.props.bookId === ''){
+      this.setState({name: '', author: ''});
+    }
   };
 
   render() {
@@ -49,7 +78,7 @@ class BookForm extends Component {
               <label className='form__label'>Author</label>
               <input className='form__input' type='text' value={author} onChange={this.handleAuthorChange}></input>
             </div>
-            <button className='button button__submit' type='submit'>{buttonText}</button>
+            <button className='button button__submit' type='submit' disabled={name === '' || author === ''}>{buttonText}</button>
           </form>
         </div>
       </section>
@@ -66,10 +95,12 @@ const mapStateToProps = (state, otherProps) => {
   const bookId = getIdFromPath(otherProps.location.pathname);
   if (bookId !== 'add') {
     return {
+      customer: state.customer,
+      bookId: getIdFromPath(otherProps.location.pathname),
       book: state.books.find(book => book.id === bookId)
     };
   } else {
-    return {};
+    return {customer: state.customer};
   }
 };
 
@@ -78,17 +109,20 @@ const mapDispatchToProps = () => {
 };
 
 BookForm.propTypes = {
+  customer: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   buttonText: PropTypes.string.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  book: PropTypes.object
+  book: PropTypes.object,
+  bookId: PropTypes.string
 };
 
 BookForm.defaultProps = {
   book: {
     name: '',
     author: ''
-  }
+  },
+  bookId: ''
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(BookForm));

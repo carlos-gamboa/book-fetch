@@ -15,8 +15,8 @@ function Header(props) {
   const navList = (
     <ul className='nav__list'>
       <li className='nav__item'><NavLink to='/book' exact activeClassName='nav__link--active' className='nav__link'>Home</NavLink></li>
-      <li className='nav__item'><NavLink to='/add' exact activeClassName='nav__link--active' className='nav__link'>Add Book</NavLink></li>
-      <li className='nav__item'><button className='button button__text' type='button' onClick={handleLogout}>Logout</button></li>
+      <li className='nav__item'><NavLink to='/book/add' exact activeClassName='nav__link--active' className='nav__link'>Add Book</NavLink></li>
+      <li className='nav__item'><button className='button button__text button--sm' type='button' onClick={handleLogout}>Logout</button></li>
     </ul>
   );
 

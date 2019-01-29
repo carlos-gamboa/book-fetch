@@ -2,47 +2,8 @@ import Actions from '../actions/actions';
 
 const INITIAL_STATE = {
   customer: '',
-  books: [
-    {
-      name: 'The Raven',
-      author: 'Edgar Allan Poe',
-      id: 'a1'
-    },
-    {
-      name: 'The Black Cat',
-      author: 'Edgar Allan Poe',
-      id: 'a2'
-    },
-    {
-      name: 'The Black Cat 2 ',
-      author: 'Edgar Allan Poe',
-      id: 'a3'
-    },
-    {
-      name: 'The Black Cat 3',
-      author: 'Edgar Allan Poe',
-      id: 'a4'
-    },
-    {
-      name: 'The Black Cat 4',
-      author: 'Edgar Allan Poe',
-      id: 'a5'
-    },
-    {
-      name: 'The Black Cat 5',
-      author: 'Edgar Allan Poe',
-      id: 'a6'
-    }
-  ]
+  books: []
 };
-
-function getLocalStorage() {
-  return JSON.parse(localStorage.getItem('counterAppData'));
-}
-
-function saveLocalStorage(newState) {
-  return localStorage.setItem('counterAppData', JSON.stringify(newState));
-}
 
 function getSessionStorage() {
   return sessionStorage.getItem('loggedUser') || '';
@@ -53,6 +14,7 @@ function saveSessionStorage(username) {
 }
 
 const BookReducer = (state = INITIAL_STATE, action) => {
+  let bookIndex, newBooks;
   switch (action.type) {
 
   case Actions.LOGIN:
@@ -83,7 +45,43 @@ const BookReducer = (state = INITIAL_STATE, action) => {
       state,
       {
         ...state,
-        books: action.books
+        books: [...action.books]
+      }
+    );
+
+  case Actions.ADD_BOOK:
+    return Object.assign(
+      {},
+      state,
+      {
+        ...state,
+        books: [...state.books, action.book]
+      }
+    );
+
+  case Actions.DELETE_BOOK:
+    bookIndex = state.books.findIndex(book => book.id === action.bookId);
+    newBooks = state.books;
+    newBooks.splice(bookIndex, 1);
+    return Object.assign(
+      {},
+      state,
+      {
+        ...state,
+        books: [...newBooks]
+      }
+    );
+
+  case Actions.UPDATE_BOOK:
+    bookIndex = state.books.findIndex(book => book.id === action.payload.bookId);
+    newBooks = state.books;
+    newBooks[bookIndex] = action.payload.book;
+    return Object.assign(
+      {},
+      state,
+      {
+        ...state,
+        books: [...newBooks]
       }
     );
 

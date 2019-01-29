@@ -3,15 +3,40 @@ import PropTypes from 'prop-types';
 import Book from '../book/Book';
 import { connect } from 'react-redux';
 import Actions from '../../redux/actions/actions';
-import BookService from '../../services/book.service';
 
 class BookList extends Component {
 
   componentDidMount() {
-    const bookService = new BookService();
-    const books = bookService.getCustomerBooks(this.props.customer);
-    console.log(books);
-    this.props.setBooks(books);
+    const headers = new Headers();
+    headers.append('customer', this.props.customer);
+
+    const config = { 
+      method: 'GET',
+      headers: headers
+    };
+
+    fetch('http://10.28.6.4:8080/book', config)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        this.props.setBooks(data);
+      });
+  }
+
+  onDeleteBook = (bookId) => {
+    const headers = new Headers();
+    headers.append('customer', this.props.customer);
+
+    const config = { 
+      method: 'DELETE',
+      headers: headers
+    };
+
+    fetch('http://10.28.6.4:8080/book/' + bookId, config)
+      .then(() => {
+        this.props.onDeleteBook(bookId);
+      });
   }
 
   render() {
@@ -28,6 +53,7 @@ class BookList extends Component {
                   bookId={book.id}
                   name={book.name}
                   author={book.author}
+                  onDeleteBook={this.onDeleteBook}
                 />
               );
             })}

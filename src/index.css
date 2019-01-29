@@ -40,7 +40,7 @@ ul, ol {
   text-transform: uppercase;
   font-weight: 300;
   font-size: 3.25rem;
-  margin-bottom: 2.15rem;
+  margin-bottom: 3rem;
   text-align: center;
 }
 
@@ -57,8 +57,15 @@ ul, ol {
   top: 0;
   width: 100%;
   padding: 0.93rem;
-  background-color: #F3EEEB;
-  border-bottom: 1px solid #ccc;
+  color: white;
+  background-color: #0f1626;
+  border-bottom: 1px solid #0E1423;
+}
+
+.header__branding {
+  text-transform: uppercase;
+  font-size: 2.25rem;
+  font-weight: 300;
 }
 
 .header__container {
@@ -100,21 +107,25 @@ ul, ol {
   margin-right: 2.5rem;
 }
 
+.nav__link {
+  transition: color .3s ease;
+}
+
 .nav__link:link,
 .nav__link:visited {
-  color: #1c1c1c;
+  color: #fff;
   text-decoration: none;
   font-size: 1.12rem;
 }
 
 .nav__link:hover,
 .nav__link:active {
-  color: #505050;
+  color: #ff533d;
 }
 
 .nav__link--active:link,
 .nav__link--active:visited {
-  color: #777;
+  color: #E84C38;
 }
 
 .login {
@@ -147,12 +158,13 @@ ul, ol {
 }
 
 .book {
-  flex: 1 1 calc(33% - 1.62rem);
+  flex-basis: calc(33% - 1.04rem);
   display: flex;
   align-content: center;
-  padding: 0.93rem 1.25rem;
-  border-radius: 3px;
   margin-bottom: 1.87rem;
+
+  background-color: #ff533d;
+  color: #fff;
 }
 
 .book:not(:nth-child(3n)) {
@@ -161,6 +173,7 @@ ul, ol {
 
 .book__info {
   flex: 1 1 auto;
+  padding: 0.93rem 1.25rem;
 }
 
 .book__name {
@@ -212,10 +225,9 @@ ul, ol {
 .form__input {
   flex: 1 1 100%;
   width: 100%;
-  background-color: #F3EEEB;
+  background-color: #f5f5f5;
 
   border: none;
-  border-radius: 3px;
   box-shadow: none;
   padding: 0.62rem 0.93rem;
 
@@ -230,11 +242,10 @@ ul, ol {
 .button {
   align-self: center;
   border: 3px solid transparent;
-  border-radius: 3px;
   box-shadow: none;
   padding: .62rem .93rem;
   cursor: pointer;
-  background-color: #505050;
+  background-color: #FF533D;
   color: #fff;
   font-size: 1.25rem;
 
@@ -246,19 +257,26 @@ ul, ol {
 }
 
 .button:hover {
-  background-color: #fefefe;
-  border-color: #505050;
-  color: #505050;
+  background-color: #fff;
+  border-color: #FF533D;
+  color: #FF533D;
 }
 
 .button:disabled {
-  background-color: #AFAFAF;
-  color: #E7E7E7;
-  border-color: #AFAFAF;
+  background-color: #FFA195;
+  color: #fefefe;
+  border-color: #FFA195;
 }
 
-.button--small {
-  padding: .6rem;
+
+.button--sm {
+  padding: .31rem .62rem;
+  font-size: 1.12rem;
+}
+
+.button--xs {
+  padding: .5rem;
+  border-radius: 0;
 }
 
 .button--light {
@@ -272,20 +290,24 @@ ul, ol {
   color: #d4d4d2;
 }
 
-.button--orange {
-  background-color: #ff9500;
+.button--beige {
+  background-color: #ab987a;
 }
 
-.button--orange:hover {
-  background-color: #fefefe;
-  border-color: #ff9500;
-  color: #ff9500;
+.button--beige:hover {
+  background-color: #80725B;
+  border-color: #80725B;
+  color: #fff;
 }
 
-.button--orange:disabled {
-  background-color: #FFD9A6;
-  color: #E7E7E7;
-  border-color: #FFD9A6;
+.button--navy {
+  background-color: #0f1626;
+}
+
+.button--navy:hover {
+  background-color: #4B515D;
+  border-color: #4B515D;
+  color: #fff;
 }
 
 .button--red {
@@ -299,5 +321,9 @@ ul, ol {
 }
 
 .button__icon { 
-  font-size: 1.12rem;
+  font-size: 1.56rem;
+}
+
+.as-stretch {
+  align-self: stretch;
 }
