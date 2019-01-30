@@ -1,5 +1,34 @@
+import { NotificationManager } from 'react-notifications';
+
 export default class AppService {
   apiUrl = 'http://10.28.6.4:8080/v2/';
+
+  interceptRequest = (callback, data) => {
+    if ((parseInt(localStorage.getItem('token-time'), 10) + 90000) < new Date().getTime()) {
+      this.renewToken()
+        .then((response) => {
+          if (response.status !== 200) {
+            throw response;
+          }
+          else {
+            return response.json();
+          }
+        })
+        .then ((responseData) => {
+          localStorage.setItem('token', responseData.token);
+          localStorage.setItem('token-time', new Date().getTime());
+          callback(this, data);
+        })
+        .catch((error) => {
+          if (error.status !== 401) {
+            NotificationManager.error('A server error occurred.', 'Error');
+          }
+        });
+    }
+    else {
+      callback(this, data);
+    }
+  }
 
   renewToken = () => {
     const headers = new Headers();

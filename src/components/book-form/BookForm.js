@@ -18,26 +18,30 @@ class BookForm extends Component {
   componentDidMount() {
     if (this.props.bookId !== '') {
       const appService = new AppService();
-      appService.getBook(this.props.bookId)
-        .then((response) => {
-          if(response.status !== 200) {
-            throw response;
-          } else {
-            return response.json();
-          }
-        })
-        .then((data) => {
-          this.setState({name: data.name, author: data.author});
-        })
-        .catch((error) => {
-          if (error.status === 401) {
-            NotificationManager.error('Your session has expired.', 'Error');
-            this.props.history.replace('/');
-          } else {
-            NotificationManager.error('An error ocurred while retrieving the book data.', 'Error');
-          }
-        });
+      appService.interceptRequest(this.getBook, {});
     }
+  }
+
+  getBook = (appService) => {
+    appService.getBook(this.props.bookId)
+      .then((response) => {
+        if(response.status !== 200) {
+          throw response;
+        } else {
+          return response.json();
+        }
+      })
+      .then((data) => {
+        this.setState({name: data.name, author: data.author});
+      })
+      .catch((error) => {
+        if (error.status === 401) {
+          NotificationManager.error('Your session has expired.', 'Error');
+          this.props.history.replace('/');
+        } else {
+          NotificationManager.error('An error ocurred while retrieving the book data.', 'Error');
+        }
+      });
   }
 
   componentDidUpdate(prevProps) {

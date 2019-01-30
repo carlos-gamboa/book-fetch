@@ -14,29 +14,27 @@ import AppService from './services/app.service';
 
 class App extends Component {
 
-  componentDidMount() {
-    this.props.setIsLoggedIn(false, '');
-    if(this.props.location.pathname === '/'){
-      const appService = new AppService();
-      appService.renewToken()
-        .then((response) => {
-          if(response.status !== 200) {
-            throw response;
-          } else {
-            return response.json();
-          }
-        })
-        .then((data) => {
-          localStorage.setItem('token', data.token);
-          this.props.setIsLoggedIn(true, data.customer);
-          this.props.history.replace('/book');
-        })
-        .catch((error) => {
-          if (error.status === 401) {
-            this.props.setIsLoggedIn(false, '');
-          }
-        });
-    }
+  componentDidMount() {    
+    const appService = new AppService();
+    appService.renewToken()
+      .then((response) => {
+        if(response.status !== 200) {
+          throw response;
+        } else {
+          return response.json();
+        }
+      })
+      .then((data) => {
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('token-time', new Date().getTime());
+        this.props.setIsLoggedIn(true, data.customer);
+      })
+      .catch((error) => {
+        if (error.status === 401) {
+          this.props.setIsLoggedIn(false, '');
+          this.props.history.replace('/');
+        }
+      });
   }
 
   onLogin = (data) => {
@@ -76,7 +74,16 @@ class App extends Component {
 
   onAddBook = (book) => {
     const appService = new AppService();
-    appService.addBook(book)
+    appService.interceptRequest(this.addBook, {book: book});
+  }
+
+  onUpdateBook = (book, bookId) => {
+    const appService = new AppService();
+    appService.interceptRequest(this.updateBook, {bookId: bookId, book: book});
+  }
+
+  addBook = (appService, data) => {
+    appService.addBook(data.book)
       .then((response) => {
         if(response.status !== 200) {
           throw response;
@@ -98,9 +105,8 @@ class App extends Component {
       });
   }
 
-  onUpdateBook = (bookId, book) => {
-    const appService = new AppService();
-    appService.updateBook(bookId, book)
+  updateBook = (appService, data) => {
+    appService.updateBook(data.bookId, data.book)
       .then((response) => {
         if(response.status !== 200) {
           throw response;
@@ -109,8 +115,8 @@ class App extends Component {
         }
       })
       .then(() => {
-        this.props.onUpdateBook(book, bookId);
-        NotificationManager.success(`${book.name} was updated.`, 'Success!');
+        this.props.onUpdateBook(data.book, data.bookId);
+        NotificationManager.success(`${data.book.name} was updated.`, 'Success!');
       })
       .catch((error) => {
         if (error.status === 401) {

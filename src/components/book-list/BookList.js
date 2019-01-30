@@ -11,6 +11,15 @@ class BookList extends Component {
 
   componentDidMount() {
     const appService = new AppService();
+    appService.interceptRequest(this.getAllBooks, {});
+  }
+
+  onDeleteBook = (bookId) => {
+    const appService = new AppService();
+    appService.interceptRequest(this.deleteBook, {bookId: bookId});
+  }
+
+  getAllBooks = (appService) => {
     appService.getAllBooks()
       .then((response) => {
         if(response.status !== 200) {
@@ -32,14 +41,13 @@ class BookList extends Component {
       });
   }
 
-  onDeleteBook = (bookId) => {
-    const appService = new AppService();
-    appService.deleteBook(bookId)
+  deleteBook = (appService, data) => {
+    appService.deleteBook(data.bookId)
       .then((response) => {
         if(response.status !== 200) {
           throw response;
         } else {
-          this.props.onDeleteBook(bookId);
+          this.props.onDeleteBook(data.bookId);
           NotificationManager.success('The book was deleted.', 'Success!');
         }
       })

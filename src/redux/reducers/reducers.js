@@ -11,7 +11,8 @@ function getTokenFromLocal() {
 }
 
 function saveTokenToLocal(token) {
-  return localStorage.setItem('token', token);
+  localStorage.setItem('token', token);
+  localStorage.setItem('token-time', new Date().getTime());
 }
 
 function removeTokenFromLocal() {
