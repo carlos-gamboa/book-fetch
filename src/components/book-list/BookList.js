@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Book from '../book/Book';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import Actions from '../../redux/actions/actions';
 import { NotificationManager } from 'react-notifications';
 import AppService from '../../services/app.service';
@@ -12,22 +13,43 @@ class BookList extends Component {
     const appService = new AppService();
     appService.getAllBooks()
       .then((response) => {
-        return response.json();
+        if(response.status !== 200) {
+          throw response;
+        } else {
+          return response.json();
+        }
       })
       .then((data) => {
         this.props.setBooks(data);
+      })
+      .catch((error) => {
+        if (error.status === 401) {
+          NotificationManager.error('Your session has expired.', 'Error');
+          this.props.history.replace('/');
+        } else {
+          NotificationManager.error('An error has occurred.', 'Error');
+        }
       });
   }
 
   onDeleteBook = (bookId) => {
     const appService = new AppService();
     appService.deleteBook(bookId)
-      .then(() => {
-        this.props.onDeleteBook(bookId);
-        NotificationManager.success('The book was deleted.', 'Success!');
+      .then((response) => {
+        if(response.status !== 200) {
+          throw response;
+        } else {
+          this.props.onDeleteBook(bookId);
+          NotificationManager.success('The book was deleted.', 'Success!');
+        }
       })
-      .catch (() => {
-        NotificationManager.error('An error has occurred', 'Error');
+      .catch ((error) => {
+        if (error.status === 401) {
+          NotificationManager.error('Your session has expired.', 'Error');
+          this.props.history.replace('/');
+        } else { 
+          NotificationManager.error('An error ocurred while deleting the book.', 'Error');
+        }
       });
   }
 
@@ -78,11 +100,12 @@ BookList.propTypes = {
   customer: PropTypes.string.isRequired,
   books: PropTypes.array,
   setBooks: PropTypes.func,
-  onDeleteBook: PropTypes.func
+  onDeleteBook: PropTypes.func,
+  history: PropTypes.object
 };
 
 BookList.defaultProps = {
   books: []
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(BookList);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(BookList));

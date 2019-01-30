@@ -20,13 +20,22 @@ class BookForm extends Component {
       const appService = new AppService();
       appService.getBook(this.props.bookId)
         .then((response) => {
-          return response.json();
+          if(response.status !== 200) {
+            throw response;
+          } else {
+            return response.json();
+          }
         })
         .then((data) => {
           this.setState({name: data.name, author: data.author});
         })
-        .catch(() => {
-          NotificationManager.error('An error has occurred', 'Error');
+        .catch((error) => {
+          if (error.status === 401) {
+            NotificationManager.error('Your session has expired.', 'Error');
+            this.props.history.replace('/');
+          } else {
+            NotificationManager.error('An error ocurred while retrieving the book data.', 'Error');
+          }
         });
     }
   }
@@ -111,7 +120,8 @@ BookForm.propTypes = {
   buttonText: PropTypes.string.isRequired,
   onSubmit: PropTypes.func.isRequired,
   book: PropTypes.object,
-  bookId: PropTypes.string
+  bookId: PropTypes.string,
+  history: PropTypes.object
 };
 
 BookForm.defaultProps = {

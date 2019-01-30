@@ -14,30 +14,63 @@ import AppService from './services/app.service';
 
 class App extends Component {
 
+  componentDidMount() {
+    this.props.setIsLoggedIn(false, '');
+    if(this.props.location.pathname === '/'){
+      const appService = new AppService();
+      appService.renewToken()
+        .then((response) => {
+          if(response.status !== 200) {
+            throw response;
+          } else {
+            return response.json();
+          }
+        })
+        .then((data) => {
+          localStorage.setItem('token', data.token);
+          this.props.setIsLoggedIn(true, data.customer);
+          this.props.history.replace('/book');
+        })
+        .catch((error) => {
+          if (error.status === 401) {
+            this.props.setIsLoggedIn(false, '');
+          }
+        });
+    }
+  }
+
   onLogin = (data) => {
     const appService = new AppService();
     appService.login(data)
       .then((response) => {
-        return response.json();
+        if(response.status !== 200) {
+          throw response;
+        } else {
+          return response.json();
+        }
       })
       .then((responseData) => {
         this.props.onLogin(responseData.token, responseData.customer);
-        NotificationManager.success('Successful login', 'Success!');
         this.props.history.replace('/book');
       })
       .catch(() => {
-        NotificationManager.error('An error has occurred', 'Error');
+        NotificationManager.error('An error ocurred trying to log in.', 'Error');
       });
   }
 
   onRegister = (data) => {
     const appService = new AppService();
     appService.register(data)
-      .then(() => {
-        NotificationManager.success('Successful register', 'Success!');
+      .then((response) => {
+        if(response.status !== 200) {
+          throw response;
+        } else {
+          NotificationManager.success('Successful register', 'Success!');
+          this.props.history.replace('/');
+        }
       })
       .catch(() => {
-        NotificationManager.error('An error has occurred', 'Error');
+        NotificationManager.error('An error ocurred trying to register.', 'Error');
       });
   }
 
@@ -45,14 +78,23 @@ class App extends Component {
     const appService = new AppService();
     appService.addBook(book)
       .then((response) => {
-        return response.json();
+        if(response.status !== 200) {
+          throw response;
+        } else {
+          return response.json();
+        }
       })
       .then((data) => {
         this.props.onAddBook(data);
         NotificationManager.success(`${data.name} was added.`, 'Success!');
       })
-      .catch(() => {
-        NotificationManager.error('An error has occurred', 'Error');
+      .catch((error) => {
+        if (error.status === 401) {
+          NotificationManager.error('Your session has expired.', 'Error');
+          this.props.history.replace('/');
+        } else { 
+          NotificationManager.error('An error ocurred while adding the book', 'Error');
+        }
       });
   }
 
@@ -60,14 +102,23 @@ class App extends Component {
     const appService = new AppService();
     appService.updateBook(bookId, book)
       .then((response) => {
-        return response.json();
+        if(response.status !== 200) {
+          throw response;
+        } else {
+          return response.json();
+        }
       })
       .then(() => {
         this.props.onUpdateBook(book, bookId);
         NotificationManager.success(`${book.name} was updated.`, 'Success!');
       })
-      .catch(() => {
-        NotificationManager.error('An error has occurred', 'Error');
+      .catch((error) => {
+        if (error.status === 401) {
+          NotificationManager.error('Your session has expired.', 'Error');
+          this.props.history.replace('/');
+        } else { 
+          NotificationManager.error('An error ocurred while updating the book', 'Error');
+        }
       });
   }
 
@@ -107,6 +158,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    setIsLoggedIn: (isLoggedIn, customer) => {
+      dispatch({type: Actions.SET_LOGGED_IN, payload: {isLoggedIn: isLoggedIn, customer: customer}});
+    },
     onLogin: (token, customer) => {
       dispatch({type: Actions.LOGIN, payload: {token: token, customer: customer}});
     },
@@ -124,11 +178,13 @@ const mapDispatchToProps = (dispatch) => {
 
 App.propTypes = {
   isLoggedIn: PropTypes.bool,
+  setIsLoggedIn: PropTypes.func,
   onLogin: PropTypes.func,
   onLogout: PropTypes.func,
   onAddBook: PropTypes.func,
   onUpdateBook: PropTypes.func,
-  history: PropTypes.object
+  history: PropTypes.object,
+  location: PropTypes.object
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

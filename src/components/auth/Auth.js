@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
 
 class Auth extends Component {
 
@@ -65,7 +64,7 @@ class Auth extends Component {
             {type !== 'login' ? 
               <div className='form__control'>
                 <label className='form__label'>Customer</label>
-                <input className='form__input' type='password' value={customer} onChange={this.handleCustomerChange}></input>
+                <input className='form__input' type='text' value={customer} onChange={this.handleCustomerChange}></input>
               </div> : 
               null
             }
@@ -80,8 +79,7 @@ class Auth extends Component {
 Auth.propTypes = {
   type: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-  onSubmit: PropTypes.func,
-  history: PropTypes.object
+  onSubmit: PropTypes.func
 };
 
-export default withRouter(Auth);
+export default Auth;

@@ -1,4 +1,5 @@
 const Actions = {
+  SET_LOGGED_IN: 'SET_LOGGED_IN',
   LOGIN: 'LOGIN',
   LOGOUT: 'LOGOUT',
   SET_BOOKS: 'SET_BOOKS',

@@ -22,6 +22,17 @@ const BookReducer = (state = INITIAL_STATE, action) => {
   let bookIndex, newBooks;
   switch (action.type) {
 
+  case Actions.SET_LOGGED_IN:
+    return Object.assign(
+      {},
+      state,
+      {
+        ...state,
+        isLoggedIn: action.payload.isLoggedIn,
+        customer: action.payload.customer
+      }
+    );
+
   case Actions.LOGIN:
     saveTokenToLocal(action.payload.token);
     return Object.assign(

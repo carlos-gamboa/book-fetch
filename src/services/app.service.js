@@ -1,6 +1,19 @@
 export default class AppService {
   apiUrl = 'http://10.28.6.4:8080/v2/';
 
+  renewToken = () => {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('auth-token', localStorage.getItem('token'));
+
+    const config = { 
+      method: 'POST',
+      headers: headers
+    };
+
+    return fetch(this.apiUrl + 'user/renew', config);
+  }
+
   login = (data) => {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
