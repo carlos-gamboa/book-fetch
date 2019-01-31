@@ -3,20 +3,13 @@ import PropTypes from 'prop-types';
 
 class Auth extends Component {
 
-  constructor(props) {
+  constructor() {
     super();
-    if (props.type === 'login') {
-      this.state = {
-        username: '',
-        password: ''
-      };
-    } else {
-      this.state = {
-        username: '',
-        password: '',
-        customer: ''
-      };
-    }
+    this.state = {
+      username: '',
+      password: '',
+      customer: ''
+    };
   }
 
   handleUsernameChange = (event) => {

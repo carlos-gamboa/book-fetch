@@ -114,8 +114,8 @@ class App extends Component {
           return response.json();
         }
       })
-      .then(() => {
-        this.props.onUpdateBook(data.book, data.bookId);
+      .then((responseData) => {
+        this.props.onUpdateBook(responseData, data.bookId);
         NotificationManager.success(`${data.book.name} was updated.`, 'Success!');
       })
       .catch((error) => {

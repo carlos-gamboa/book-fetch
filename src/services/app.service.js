@@ -1,7 +1,7 @@
 import { NotificationManager } from 'react-notifications';
 
 export default class AppService {
-  apiUrl = 'http://10.28.6.4:8080/v2/';
+  apiUrl = 'http://localhost:3000/v2/';
 
   /**
    * Renews the user token if it;s about to expire before sending a request.
