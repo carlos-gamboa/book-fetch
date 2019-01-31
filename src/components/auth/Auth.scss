@@ -1,0 +1,12 @@
+@import '../../index.scss';
+
+.auth {
+  @include flexCenter;
+  min-height: 100vh;
+}
+
+.auth__container {
+  @include flexCenter;
+  flex-direction: column;
+  max-width: 25rem;
+}

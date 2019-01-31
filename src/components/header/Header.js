@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import './Header.scss';
 import { NavLink, withRouter } from 'react-router-dom';
 
 function Header(props) {

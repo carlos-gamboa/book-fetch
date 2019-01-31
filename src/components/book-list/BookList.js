@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './BookList.scss';
 import PropTypes from 'prop-types';
 import Book from '../book/Book';
 import { connect } from 'react-redux';

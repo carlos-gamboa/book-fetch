@@ -1,0 +1,35 @@
+@import '../../index.scss';
+
+.book {
+  flex-basis: calc(33% - 1.04rem);
+  display: flex;
+  align-content: center;
+  margin-bottom: 1.87rem;
+
+  background-color: $color-primary;
+  color: $color-white;
+}
+
+.book:not(:nth-child(3n)) {
+  margin-right: 1.87rem;
+}
+
+.book__info {
+  flex: 1 1 auto;
+  padding: 0.93rem 1.25rem;
+}
+
+.book__name {
+  margin-bottom: 0.63rem;
+  font-size: 1.87rem;
+  font-weight: 300;
+}
+
+.book__author {
+  font-style: italic;
+  font-size: 1.12rem;
+}
+
+.book__button {
+  flex: 0 0 auto;
+}

@@ -1,0 +1,64 @@
+// VARIABLES
+$color-primary: #FF533D;
+$color-primary-light: #FFA195;
+$color-primary-dark: #BA3D2D;
+
+$color-secondary: #0F1626;
+$color-secondary-light: #4B515D;
+$color-secondary-dark: #0B111C;
+
+$color-terciary: #AB987A;
+$color-terciary-light: #C9BDAA;
+$color-terciary-dark: #80725B;
+
+$color-white: #FFFFFF;
+$color-white-disabled: #F5F5F5;
+
+$default-font-family: "Lato", sans-serif;
+
+// MIXINS
+
+@mixin flexCenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+// RESET
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: $default-font-family;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+ul, ol {
+  margin: 0;
+  padding: 0;
+
+  list-style: none;
+}

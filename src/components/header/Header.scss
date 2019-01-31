@@ -1,0 +1,72 @@
+@import '../../index.scss';
+
+.header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  padding: 0.93rem;
+  color: white;
+  background-color: $color-secondary;
+  border-bottom: 1px solid $color-secondary;
+}
+
+.header__branding {
+  text-transform: uppercase;
+  font-size: 2.25rem;
+  font-weight: 300;
+}
+
+.header__container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.nav__name {
+  font-size: 1.56rem;
+  font-weight: 300;
+}
+
+.nav__name:link,
+.nav__name:visited {
+  color: #1c1c1c;
+}
+
+.nav__list {
+  flex-basis: 100%;
+
+  @include flexCenter;
+  
+  transition: all .3s;
+}
+
+.nav__item:not(:last-child) {
+  margin-right: 2.5rem;
+}
+
+.nav__link {
+  transition: color .3s ease;
+}
+
+.nav__link:link,
+.nav__link:visited {
+  color: $color-white;
+  text-decoration: none;
+  font-size: 1.12rem;
+}
+
+.nav__link:hover,
+.nav__link:active {
+  color: $color-primary;
+}
+
+.nav__link--active:link,
+.nav__link--active:visited {
+  color: $color-primary-dark;
+}

@@ -1,0 +1,10 @@
+@import '../../index.scss';
+
+.book-list {
+  padding-top: 8rem;
+}
+
+.book-list__container {
+  display: flex;
+  flex-wrap: wrap;
+}
