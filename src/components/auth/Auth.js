@@ -36,6 +36,11 @@ class Auth extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
     this.props.onSubmit(this.state);
+    this.setState ({
+      username: '',
+      password: '',
+      customer: ''
+    });
   };
 
   render() {

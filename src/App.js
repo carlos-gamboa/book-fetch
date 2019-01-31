@@ -67,8 +67,12 @@ class App extends Component {
           this.props.history.replace('/');
         }
       })
-      .catch(() => {
-        NotificationManager.error('An error ocurred trying to register.', 'Error');
+      .catch((error) => {
+        if (error.status === 409) {
+          NotificationManager.error('Username is already taken.', 'Error');
+        } else {
+          NotificationManager.error('An error ocurred trying to register.', 'Error');
+        }
       });
   }
 
