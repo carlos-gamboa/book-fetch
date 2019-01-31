@@ -1,4 +1,6 @@
 @import '../../index.scss';
+@import '../../styles/layout.scss';
+@import '../../styles/button.scss';
 
 .header {
   position: fixed;
@@ -8,65 +10,64 @@
   color: white;
   background-color: $color-secondary;
   border-bottom: 1px solid $color-secondary;
-}
 
-.header__branding {
-  text-transform: uppercase;
-  font-size: 2.25rem;
-  font-weight: 300;
-}
+  &__branding {
+    text-transform: uppercase;
+    font-size: 2.25rem;
+    font-weight: 300;
+  }
 
-.header__container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+  &__container {
+    @include container;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 
-.nav {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-}
+  &__nav {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
 
-.nav__name {
-  font-size: 1.56rem;
-  font-weight: 300;
-}
+  &__list {
+    @include flex-center;
+    flex-basis: 100%;
+    transition: all .3s;
+  }
 
-.nav__name:link,
-.nav__name:visited {
-  color: #1c1c1c;
-}
+  &__item:not(:last-child) {
+    margin-right: 2.5rem;
+  }
 
-.nav__list {
-  flex-basis: 100%;
+  &__link {
+    transition: color .3s ease;
 
-  @include flexCenter;
-  
-  transition: all .3s;
-}
+    &:link,
+    &:visited {
+      color: $color-white;
+      text-decoration: none;
+      font-size: 1.12rem;
+    }
 
-.nav__item:not(:last-child) {
-  margin-right: 2.5rem;
-}
+    &:hover,
+    &:active {
+      color: $color-primary;
+    }
 
-.nav__link {
-  transition: color .3s ease;
-}
+    &--active:link,
+    &--active:visited {
+      color: $color-primary-dark;
+    }
+  }
 
-.nav__link:link,
-.nav__link:visited {
-  color: $color-white;
-  text-decoration: none;
-  font-size: 1.12rem;
-}
+  &__button {
+    @include button;
+    @include button-primary;
+    @include button-small;
 
-.nav__link:hover,
-.nav__link:active {
-  color: $color-primary;
-}
-
-.nav__link--active:link,
-.nav__link--active:visited {
-  color: $color-primary-dark;
+    &:hover {
+      @include button-primary-outline;
+    }
+  }
 }

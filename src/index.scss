@@ -16,14 +16,6 @@ $color-white-disabled: #F5F5F5;
 
 $default-font-family: "Lato", sans-serif;
 
-// MIXINS
-
-@mixin flexCenter {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 // RESET
 *,
 *::before,

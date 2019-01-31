@@ -1,11 +1,49 @@
 @import '../../index.scss';
+@import '../../styles/layout.scss';
+@import '../../styles/form.scss';
+@import '../../styles/typography.scss';
+@import '../../styles/button.scss';
 
-.book-details {
+.book-form {
+  @include container;
+  @include flex-center;
   min-height: 100vh;
-  display: flex;
-  align-items: center;
-}
-
-.details__form {
   flex-direction: column;
+
+  &__heading {
+    @include heading;
+    @include heading-primary;
+  }
+
+  &__form {
+    @include form;
+    flex-direction: column;
+  }
+
+  &__group {
+    @include form-control;
+    max-width: none;
+    width: 25rem;
+  }
+
+  &__label {
+    @include form-label;
+  }
+
+  &__input {
+    @include form-input;
+  }
+
+  &__button {
+    @include button;
+    @include button-primary;
+
+    &:hover {
+      @include button-primary-outline;
+    }
+
+    &:disabled {
+      @include button-primary-light;
+    }
+  }
 }

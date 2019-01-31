@@ -1,4 +1,5 @@
 @import '../../index.scss';
+@import '../../styles/button.scss';
 
 .book {
   flex-basis: calc(33% - 1.04rem);
@@ -8,28 +9,51 @@
 
   background-color: $color-primary;
   color: $color-white;
-}
 
-.book:not(:nth-child(3n)) {
-  margin-right: 1.87rem;
-}
+  &:not(:nth-child(3n)) {
+    margin-right: 1.87rem;
+  }
 
-.book__info {
-  flex: 1 1 auto;
-  padding: 0.93rem 1.25rem;
-}
+  &__info {
+    flex: 1 1 auto;
+    padding: 0.93rem 1.25rem;
+  }
 
-.book__name {
-  margin-bottom: 0.63rem;
-  font-size: 1.87rem;
-  font-weight: 300;
-}
+  &__name {
+    margin-bottom: 0.63rem;
+    font-size: 1.87rem;
+    font-weight: 300;
+  }
 
-.book__author {
-  font-style: italic;
-  font-size: 1.12rem;
-}
+  &__author {
+    font-style: italic;
+    font-size: 1.12rem;
+  }
 
-.book__button {
-  flex: 0 0 auto;
+  &__button {
+    @include button;
+    @include button-xs;
+    flex: 0 0 auto;
+    align-self: stretch;
+
+    &--secondary {
+      @include button-secondary;
+
+      &:hover {
+        @include button-secondary-light;
+      }
+    }
+
+    &--terciary {
+      @include button-terciary;
+
+      &:hover {
+        @include button-terciary-dark;
+      }
+    }
+  }
+
+  &__icon {
+    font-size: 1.56rem;
+  }
 }

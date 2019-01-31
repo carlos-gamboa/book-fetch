@@ -1,12 +1,51 @@
 @import '../../index.scss';
+@import '../../styles/layout.scss';
+@import '../../styles/typography.scss';
+@import '../../styles/form.scss';
+@import '../../styles/button.scss';
 
 .auth {
-  @include flexCenter;
+  @include flex-center;
   min-height: 100vh;
-}
 
-.auth__container {
-  @include flexCenter;
-  flex-direction: column;
-  max-width: 25rem;
+  &__container {
+    @include container;
+    @include flex-center;
+    flex-direction: column;
+    max-width: 25rem;
+  }
+
+  &__heading {
+    @include heading;
+    @include heading-primary;
+  }
+
+  &__form {
+    @include form;
+  }
+
+  &__group {
+    @include form-control;
+  }
+
+  &__label {
+    @include form-label;
+  }
+
+  &__input {
+    @include form-input;
+  }
+
+  &__button {
+    @include button;
+    @include button-primary;
+
+    &:hover {
+      @include button-primary-outline;
+    }
+
+    &:disabled {
+      @include button-primary-light;
+    }
+  }
 }

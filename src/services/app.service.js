@@ -4,6 +4,21 @@ export default class AppService {
   apiUrl = 'http://localhost:3000/v2/';
 
   /**
+   * Generates the headers for the requests
+   *
+   * @param {boolean} includeAuth Include the auth header
+   * @returns Headers
+   */
+  getCustomHeaders = (includeAuth) => {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    if (includeAuth) {
+      headers.append('auth-token', localStorage.getItem('token'));
+    }
+    return headers;
+  }
+
+  /**
    * Renews the user token if it;s about to expire before sending a request.
    *
    * @param {Function} callback Function to be called if the token hasn´t expired.
@@ -42,13 +57,9 @@ export default class AppService {
    * @returns Promise with the API response.
    */
   renewToken = () => {
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('auth-token', localStorage.getItem('token'));
-
     const config = { 
       method: 'POST',
-      headers: headers
+      headers: this.getCustomHeaders(true)
     };
 
     return fetch(this.apiUrl + 'user/renew', config);
@@ -62,12 +73,9 @@ export default class AppService {
    * @returns Promise with the API response.
    */
   login = (data) => {
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-
     const config = { 
       method: 'POST',
-      headers: headers,
+      headers: this.getCustomHeaders(false),
       body: JSON.stringify(data)
     };
 
@@ -81,12 +89,9 @@ export default class AppService {
    * @returns Promise with the API response.
    */
   register = (data) => {
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-
     const config = { 
       method: 'POST',
-      headers: headers,
+      headers: this.getCustomHeaders(false),
       body: JSON.stringify(data)
     };
 
@@ -99,13 +104,9 @@ export default class AppService {
    * @returns Promise with the API response.
    */
   getAllBooks = () => {
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('auth-token', localStorage.getItem('token'));
-
     const config = { 
       method: 'GET',
-      headers: headers
+      headers: this.getCustomHeaders(true)
     };
 
     return fetch(this.apiUrl + 'book', config);
@@ -118,13 +119,9 @@ export default class AppService {
    * @returns Promise with the API response.
    */
   getBook = (bookId) => {
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('auth-token', localStorage.getItem('token'));
-
     const config = { 
       method: 'GET',
-      headers: headers
+      headers: this.getCustomHeaders(true)
     };
 
     return fetch(this.apiUrl + 'book/' + bookId, config);
@@ -138,13 +135,9 @@ export default class AppService {
    * @returns Promise with the API response.
    */
   updateBook = (bookId, data) => {
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('auth-token', localStorage.getItem('token'));
-
     const config = { 
       method: 'PUT',
-      headers: headers,
+      headers: this.getCustomHeaders(true),
       body: JSON.stringify(data)
     };
 
@@ -158,13 +151,9 @@ export default class AppService {
    * @returns Promise with the API response.
    */
   addBook = (data) => {
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('auth-token', localStorage.getItem('token'));
-
     const config = { 
       method: 'POST',
-      headers: headers,
+      headers: this.getCustomHeaders(true),
       body: JSON.stringify(data)
     };
 
@@ -178,13 +167,9 @@ export default class AppService {
    * @returns Promise with the API Response.
    */
   deleteBook = (bookId) => {
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('auth-token', localStorage.getItem('token'));
-
     const config = { 
       method: 'DELETE',
-      headers: headers
+      headers: this.getCustomHeaders(true)
     };
 
     return fetch(this.apiUrl + 'book/' + bookId, config);

@@ -78,21 +78,19 @@ class BookForm extends Component {
     const { title, buttonText } = this.props;
 
     return (
-      <section className='book-details'>
-        <div className='container'>
-          <h1 className='heading__primary'>{title}</h1>
-          <form className='form details__form' onSubmit={(event) => this.handleSubmit(event)}>
-            <div className='form__control form__control--big '>
-              <label className='form__label'>Name</label>
-              <input className='form__input' type='text' value={name} onChange={this.handleNameChange}></input>
-            </div>
-            <div className='form__control form__control--big '>
-              <label className='form__label'>Author</label>
-              <input className='form__input' type='text' value={author} onChange={this.handleAuthorChange}></input>
-            </div>
-            <button className='button button__submit' type='submit' disabled={name === '' || author === ''}>{buttonText}</button>
-          </form>
-        </div>
+      <section className='book-form'>
+        <h1 className='book-form__heading'>{title}</h1>
+        <form className='book-form__form' onSubmit={(event) => this.handleSubmit(event)}>
+          <div className='book-form__group'>
+            <label className='book-form__label'>Name</label>
+            <input className='book-form__input' type='text' value={name} onChange={this.handleNameChange}></input>
+          </div>
+          <div className='book-form__group'>
+            <label className='book-form__label'>Author</label>
+            <input className='book-form__input' type='text' value={author} onChange={this.handleAuthorChange}></input>
+          </div>
+          <button className='book-form__button' type='submit' disabled={name === '' || author === ''}>{buttonText}</button>
+        </form>
       </section>
     );
   }

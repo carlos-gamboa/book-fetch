@@ -66,21 +66,19 @@ class BookList extends Component {
     const { customer, books } = this.props;
     return (
       <section className='book-list'>
-        <div className='container'>
-          <h1 className='heading__primary'>{customer}&apos;s Books</h1>
-          <div className='book-list__container'>
-            { books.map((book) => {
-              return (
-                <Book 
-                  key={book.id}
-                  bookId={book.id}
-                  name={book.name}
-                  author={book.author}
-                  onDeleteBook={this.onDeleteBook}
-                />
-              );
-            })}
-          </div>
+        <h1 className='book-list__heading'>{customer}&apos;s Books</h1>
+        <div className='book-list__container'>
+          { books.map((book) => {
+            return (
+              <Book 
+                key={book.id}
+                bookId={book.id}
+                name={book.name}
+                author={book.author}
+                onDeleteBook={this.onDeleteBook}
+              />
+            );
+          })}
         </div>
       </section>
     );

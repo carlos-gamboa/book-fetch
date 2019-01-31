@@ -17,8 +17,8 @@ function Book(props) {
         <p className='book__name'>{name}</p>
         <p className='book__author'>By {author}</p>
       </div>
-      <Link to={`/book/${bookId}`} className='button button--xs book__button as-stretch button--beige'><i className='material-icons button__icon'>edit</i></Link>
-      <button className='button button--xs button--navy book__button as-stretch' onClick={(event) => handleDeleteBook(event)}><i className='material-icons button__icon'>clear</i></button>
+      <Link to={`/book/${bookId}`} className='book__button book__button--terciary'><i className='material-icons book__icon'>edit</i></Link>
+      <button className='book__button book__button--secondary' onClick={(event) => handleDeleteBook(event)}><i className='material-icons book__icon'>clear</i></button>
     </div>
   );
 }

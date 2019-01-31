@@ -1,0 +1,65 @@
+@import '../index.scss';
+@import './layout.scss';
+
+@mixin button {
+  @include flex-center;
+  align-self: center;
+  border: 3px solid transparent;
+  box-shadow: none;
+  padding: .62rem .93rem;
+  cursor: pointer;
+  font-size: 1.25rem;
+  transition: all .3s ease;
+}
+
+@mixin button-primary {
+  background-color: $color-primary;
+  border-color: transparent;
+  color: $color-white;
+}
+
+@mixin button-primary-outline {
+  background-color: $color-white;
+  border-color: $color-primary;
+  color: $color-primary;
+}
+
+@mixin button-primary-light {
+  background-color: $color-primary-light;
+  color: $color-white-disabled;
+  border-color: $color-primary-light;
+}
+
+@mixin button-small {
+  padding: .31rem .62rem;
+  font-size: 1.12rem;
+}
+
+@mixin button-xs {
+  padding: .5rem;
+  border-radius: 0;
+}
+
+@mixin button-secondary {
+  background-color: $color-secondary;
+  border-color: transparent;
+  color: $color-white;
+}
+
+@mixin button-secondary-light {
+  background-color: $color-secondary-light;
+  border-color: $color-secondary-light;
+  color: $color-white;
+}
+
+@mixin button-terciary {
+  background-color: $color-terciary;
+  border-color: transparent;
+  color: $color-white;
+}
+
+@mixin button-terciary-dark {
+  background-color: $color-terciary-dark;
+  border-color: $color-terciary-dark;
+  color: $color-white;
+}
