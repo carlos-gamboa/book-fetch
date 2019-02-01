@@ -175,4 +175,21 @@ export default class AppService {
     return fetch(this.apiUrl + 'book/' + bookId, config);
   }
 
+  getAllSessions = () => {
+    const config = { 
+      method: 'GET',
+      headers: this.getCustomHeaders(true)
+    };
+
+    return fetch(this.apiUrl + 'user/session', config);
+  }
+
+  revokeSession = (sessionId) => {
+    const config = { 
+      method: 'DELETE',
+      headers: this.getCustomHeaders(true)
+    };
+
+    return fetch(this.apiUrl + 'user/session/' + sessionId, config);
+  }
 }

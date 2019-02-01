@@ -17,6 +17,7 @@ function Header(props) {
     <ul className='header__list'>
       <li className='header__item'><NavLink to='/book' exact activeClassName='header__link--active' className='header__link'>Home</NavLink></li>
       <li className='header__item'><NavLink to='/book/add' exact activeClassName='header__link--active' className='header__link'>Add Book</NavLink></li>
+      <li className='header__item'><NavLink to='/session' exact activeClassName='header__link--active' className='header__link'>Sessions</NavLink></li>
       <li className='header__item'><button className='header__button' type='button' onClick={handleLogout}>Logout</button></li>
     </ul>
   );

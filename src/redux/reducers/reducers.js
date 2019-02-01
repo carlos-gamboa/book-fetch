@@ -3,6 +3,7 @@ import Actions from '../actions/actions';
 const INITIAL_STATE = {
   isLoggedIn: false,
   customer: '',
+  user: '',
   books: []
 };
 
@@ -30,7 +31,8 @@ const BookReducer = (state = INITIAL_STATE, action) => {
       {
         ...state,
         isLoggedIn: action.payload.isLoggedIn,
-        customer: action.payload.customer
+        customer: action.payload.customer,
+        user: action.payload.username
       }
     );
 
@@ -42,7 +44,8 @@ const BookReducer = (state = INITIAL_STATE, action) => {
       {
         ...state,
         isLoggedIn: true,
-        customer: action.payload.customer
+        customer: action.payload.customer,
+        user: action.payload.username
       }
     );
 
@@ -54,7 +57,8 @@ const BookReducer = (state = INITIAL_STATE, action) => {
       {
         ...state,
         isLoggedIn: false,
-        customer: ''
+        customer: '',
+        user: ''
       }
     );
 

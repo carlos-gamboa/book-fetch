@@ -1,0 +1,18 @@
+@import '../../index.scss';
+@import '../../styles/layout.scss';
+@import '../../styles/typography.scss';
+
+.session-list {
+  @include container;
+  padding-top: 8rem;
+
+  &__heading {
+    @include heading;
+    @include heading-primary;
+  }
+
+  &__container {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}

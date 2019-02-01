@@ -12,6 +12,7 @@ import BookList from './components/book-list/BookList';
 import BookForm from './components/book-form/BookForm';
 import PrivateRoute from './components/routes/PrivateRoute';
 import AppService from './services/app.service';
+import SessionList from './components/session-list/SessionList';
 
 class App extends Component {
 
@@ -28,7 +29,7 @@ class App extends Component {
       .then((data) => {
         localStorage.setItem('token', data.token);
         localStorage.setItem('token-time', new Date().getTime());
-        this.props.setIsLoggedIn(true, data.customer);
+        this.props.setIsLoggedIn(true, data.customer, data.username);
       })
       .catch((error) => {
         if (error.status === 401) {
@@ -49,7 +50,7 @@ class App extends Component {
         }
       })
       .then((responseData) => {
-        this.props.onLogin(responseData.token, responseData.customer);
+        this.props.onLogin(responseData.token, responseData.customer, responseData.username);
         this.props.history.replace('/book');
       })
       .catch(() => {
@@ -153,6 +154,7 @@ class App extends Component {
           <PrivateRoute path='/book/:bookId' render={
             <BookForm title='Edit Book' buttonText='Save Changes' onSubmit={this.onUpdateBook}></BookForm>
           }></PrivateRoute>
+          <PrivateRoute exact path='/session' component={SessionList}></PrivateRoute>
           <Route render={() => <h1 className='heading__primary' style={{marginTop: '10rem'}}>404 NOT FOUND</h1>}></Route>
         </Switch>
         <NotificationContainer/>
@@ -169,11 +171,11 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setIsLoggedIn: (isLoggedIn, customer) => {
-      dispatch({type: Actions.SET_LOGGED_IN, payload: {isLoggedIn: isLoggedIn, customer: customer}});
+    setIsLoggedIn: (isLoggedIn, customer, username) => {
+      dispatch({type: Actions.SET_LOGGED_IN, payload: {isLoggedIn: isLoggedIn, customer: customer, username: username}});
     },
-    onLogin: (token, customer) => {
-      dispatch({type: Actions.LOGIN, payload: {token: token, customer: customer}});
+    onLogin: (token, customer, username) => {
+      dispatch({type: Actions.LOGIN, payload: {token: token, customer: customer, username: username}});
     },
     onLogout: () => {
       dispatch({type: Actions.LOGOUT});

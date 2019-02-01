@@ -1,0 +1,70 @@
+@import '../../index.scss';
+@import '../../styles/button.scss';
+
+.session {
+  flex-basis: calc(33% - 1.04rem);
+  display: flex;
+  align-content: center;
+  margin-bottom: 1.87rem;
+
+  background-color: $color-primary;
+  color: $color-white;
+
+  &:not(:nth-child(3n)) {
+    margin-right: 1.87rem;
+  }
+
+  &__icon-wrapper {
+    flex: 0 0 auto;
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+    padding: 0.93rem 1.25rem;
+    padding-right: 0;
+  }
+
+  &__list {
+    flex: 1 1 auto;
+    padding: 0.93rem 1.25rem;
+  }
+
+  &__item {
+    margin-bottom: .31rem;
+  }
+
+  &__label {
+    margin-right: 0.63rem;
+    font-weight: 600;
+  }
+
+  &__button {
+    @include button;
+    @include button-xs;
+    flex: 0 0 auto;
+    align-self: stretch;
+
+    &--secondary {
+      @include button-secondary;
+
+      &:hover {
+        @include button-secondary-light;
+      }
+    }
+
+    &--terciary {
+      @include button-terciary;
+
+      &:hover {
+        @include button-terciary-dark;
+      }
+    }
+  }
+
+  &__icon {
+    font-size: 1.56rem;
+
+    &--big {
+      font-size: 2.5rem;
+    }
+  }
+}
